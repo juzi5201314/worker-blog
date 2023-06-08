@@ -1,0 +1,10 @@
+name = "worker-rust"
+main = "build/worker/shim.mjs"
+compatibility_date = "2023-06-08"
+
+kv_namespaces = [
+    { binding = "worker-blog", id = "<id>" }
+]
+
+[build]
+command = "worker-build --release"
