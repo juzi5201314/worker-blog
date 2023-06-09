@@ -2,6 +2,11 @@
 
 Demo: [My blog](https://worker-blog.soeur.workers.dev/)
 
+`Worker Blog` is a simple personal blog system based on `Cloudflare Workers`, it uses `Cloudflare Workers` to process requests and routing, and `Cloudflare D1` to store data.
+
+## Todo
+At present, you can only add post but not modify or delete it. To complete these operations, you must enter the d1 database management manual operation from cloudflare dash (
+
 ## Configuration
 after deploying, go to cloudflare dash -> the worker you just deployed.
 
