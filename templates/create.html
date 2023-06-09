@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include!("head.html"); %>
+    <title>Create New</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
+</head>
+
+<body>
+
+<textarea></textarea>
+
+<div class="form-group" style="margin-left: 10%; margin-right: 10%;">
+    <div class="row">
+        <label for="title"></label>
+        <input class="input-block col sm-8" type="text" id="title" placeholder="Enter the title of the article" />
+        <div style="margin-right: 2%"></div>
+        <label for="secret"></label>
+        <input class="input-block col sm-2 flex-right" type="text" id="secret" placeholder="Enter secret" />
+    </div>
+
+    <br/>
+    <button class="btn-success-outline btn-block" id="create-btn">Create!</button>
+</div>
+
+
+<script>
+    const mde = new EasyMDE({
+        autosave: {
+            enabled: true,
+            delay: 3000,
+            uniqueId: "wb-create-new"
+        },
+        indentWithTabs: false
+    });
+
+    window.document.getElementById("create-btn").addEventListener("click", function () {
+        const title = window.document.getElementById("title").value;
+        const content = marked.parse(mde.value());
+        const secret = window.document.getElementById("secret").value;
+
+        fetch("", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                title,
+                content,
+                secret
+            })
+        }).then(function (resp) {
+            mde.clearAutosavedValue();
+            return resp.json();
+        }).then(function (data) {
+            window.location.replace("/" + data.id)
+        })
+    })
+</script>
+
+</body>
+
+</html>

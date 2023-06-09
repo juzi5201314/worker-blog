@@ -1,0 +1,23 @@
+[package]
+name = "worker-blog"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+chrono = "0.4.26"
+console_error_panic_hook = "0.1.7"
+sailfish = "0.6.1"
+serde = { version = "1.0.164", features = ["derive"] }
+worker = { git = "https://github.com/FlareLine/workers-rs", branch = "d1-support", features = ["d1"] }
+
+[profile.release]
+lto = true
+strip = true
+codegen-units = 1
+debug = false
+#opt-level = 's'

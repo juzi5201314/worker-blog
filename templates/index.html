@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include!("head.html"); %>
+    <title><%= ctx.blog_name %></title>
+</head>
+<body>
+<% for post in data.posts.iter() { %>
+<article class="article border border-primary" id="post.<%= post.id %>"
+         style="padding-left: 3%; padding-right: 3%; margin-right: 10%; margin-left: 10%; margin-bottom: 2%">
+    <h1 class="article-title"><%= post.title %></h1>
+    <p class="article-meta"><%= post.create_time %></p>
+    <p class="text-lead"><%- post.content | truncate(100) %></p>
+</article>
+<script>
+    window.document.getElementById("post.<%= post.id %>").addEventListener("click", function () {
+        window.location.href += "<%= post.id %>"
+    });
+</script>
+
+<% } %>
+
+</body>
+</html>

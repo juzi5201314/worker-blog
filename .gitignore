@@ -1,0 +1,8 @@
+/target
+/Cargo.lock
+/.idea
+/node_modules
+/wrangler.toml
+/.wrangler
+/.env
+/.dev.vars

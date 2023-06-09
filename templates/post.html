@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include!("head.html"); %>
+    <title><%= data.title %></title>
+</head>
+<body>
+<article class="article" style="margin-right: 10%; margin-left: 10%">
+    <h1 class="article-title"><%= data.title %></h1>
+    <p class="article-meta"><%= data.create_time %></p>
+    <%- data.content %>
+</article>
+
+</body>
+</html>
