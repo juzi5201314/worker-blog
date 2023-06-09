@@ -42,6 +42,10 @@ name = "<worker name>"
 main = "build/worker/shim.mjs"
 compatibility_date = "2023-06-08"
 
+[vars]
+BLOG_NAME = "A worker blog!"
+BLOG_ICON = ""
+
 [[d1_databases]]
 binding = "posts"
 database_name = "<DATABASE_NAME>"
