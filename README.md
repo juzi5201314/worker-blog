@@ -34,6 +34,20 @@ then, you must install [wrangler](https://github.com/cloudflare/workers-sdk).
 
 `npm install wrangler --save-dev` or `npm install`
 
+create `wrangler.toml`:
+```toml
+# wrangler.toml
+
+name = "<worker name>"
+main = "build/worker/shim.mjs"
+compatibility_date = "2023-06-08"
+
+[[d1_databases]]
+binding = "posts"
+database_name = "<DATABASE_NAME>"
+database_id = "<ignore first>"
+```
+
 next, [create database](#create-database).
 
 ### Create database
