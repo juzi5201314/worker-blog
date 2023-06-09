@@ -216,6 +216,7 @@ pub async fn get_index<C>(req: Request, ctx: RouteContext<C>) -> worker::Result<
         .all()
         .await?
         .results::<Post>()?;
+    posts.reverse();
     posts.iter_mut().for_each(|post| post.with_local_time());
 
     let index = Index { posts };
