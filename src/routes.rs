@@ -1,6 +1,7 @@
-use chrono::{Local, Utc};
+use chrono::{DateTime, Local, Utc};
 use sailfish::TemplateOnce;
 use serde::{Deserialize, Serialize};
+use sitewriter::{ChangeFreq, UrlEntry};
 use worker::{Cache, Headers, Request, Response, RouteContext};
 
 #[derive(Deserialize)]
@@ -113,6 +114,17 @@ pub async fn create<C>(mut req: Request, ctx: RouteContext<C>) -> worker::Result
                 {
                     let mut key = url.clone();
                     key.set_path("/json");
+                    key
+                }
+                    .as_str(),
+                true,
+            )
+            .await?;
+        cache
+            .delete(
+                {
+                    let mut key = url.clone();
+                    key.set_path("/sitemap.xml");
                     key
                 }
                     .as_str(),
@@ -237,4 +249,45 @@ pub async fn get_index<C>(req: Request, ctx: RouteContext<C>) -> worker::Result<
         ("Cache-Control", "s-maxage=86400"),
     ]))).await?;
     Ok(resp)
+}
+
+pub async fn sitemap<C>(req: Request, ctx: RouteContext<C>) -> worker::Result<Response> {
+    let cache = Cache::default();
+
+    if let Some(resp) = cache.get(&req, true).await? {
+        return Ok(resp);
+    }
+
+    let url = req.url()?;
+    let db = ctx.env.d1("posts")?;
+    let posts = db
+        .prepare("select * from posts;")
+        .all()
+        .await?
+        .results::<Post>()?;
+    let mut urls = posts.into_iter().map(|post| UrlEntry {
+        loc: {
+            let mut url = url.clone();
+            url.set_path(&format!("/{}", post.id));
+            url
+        },
+        changefreq: Some(ChangeFreq::Weekly),
+        priority: Some(0.8),
+        lastmod: Some(DateTime::parse_from_rfc3339(&post.create_time).unwrap().with_timezone(&Utc)),
+    }).collect::<Vec<_>>();
+
+    urls.push(UrlEntry {
+        loc: {
+            let mut url = url.clone();
+            url.set_path("/");
+            url
+        },
+        changefreq: Some(ChangeFreq::Always),
+        priority: Some(1.0),
+        lastmod: None,
+    });
+
+    Response::ok(sitewriter::generate_str(&urls)).map(|resp| resp.with_headers(Headers::from_iter(&[
+        ("content-type", "application/xml")
+    ])))
 }

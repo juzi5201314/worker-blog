@@ -21,6 +21,7 @@ pub async fn _main(req: Request, env: Env, _: worker::Context) -> Result<Respons
     let router = Router::new();
 
     router
+        .get_async("/sitemap.xml", routes::sitemap)
         .get_async("/create", routes::create_page)
         .post_async("/create", routes::create)
         .get_async("/json", routes::get_index)

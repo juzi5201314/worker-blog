@@ -13,6 +13,7 @@ chrono = "0.4.26"
 console_error_panic_hook = "0.1.7"
 sailfish = "0.6.1"
 serde = { version = "1.0.164", features = ["derive"] }
+sitewriter = "1.0.1"
 worker = { git = "https://github.com/FlareLine/workers-rs", branch = "d1-support", features = ["d1"] }
 
 [profile.release]

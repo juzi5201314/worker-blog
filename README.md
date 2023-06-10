@@ -136,3 +136,5 @@ see [`Post`](#response--post-)
   "create_time": "post release time in rfc3339 format"
 }
 ```
+
+* `GET /sitemap.xml`: ummm..
