@@ -182,7 +182,7 @@ pub async fn get_post<C>(req: Request, ctx: RouteContext<C>) -> worker::Result<R
                     &req,
                     resp.cloned()?.with_headers(Headers::from_iter(&[
                         // 24h
-                        ("s-maxage", "86400"),
+                        ("Cache-Control", "s-maxage=86400"),
                     ])),
                 )
                 .await?;
@@ -232,6 +232,9 @@ pub async fn get_index<C>(req: Request, ctx: RouteContext<C>) -> worker::Result<
                 .map_err(|e| worker::Error::RustError(e.to_string()))?,
         )?
     };
-    cache.put(&req, resp.cloned()?).await?;
+    cache.put(&req, resp.cloned()?.with_headers(Headers::from_iter(&[
+        // 24h
+        ("Cache-Control", "s-maxage=86400"),
+    ]))).await?;
     Ok(resp)
 }
